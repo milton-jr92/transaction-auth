@@ -1,5 +1,7 @@
+import controller.TransactionController;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        TransactionController.main(args);
     }
 }

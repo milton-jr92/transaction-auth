@@ -72,7 +72,7 @@ public class AccountRepository {
         return null;
     }
 
-    public void updateAccount(Account account) {
+    public int updateAccount(Account account) {
         String sql = "UPDATE Account SET foodBalance = ?, mealBalance = ?, cashBalance = ?, totalBalance = ? WHERE accountId = ?";
 
         try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
@@ -82,21 +82,23 @@ public class AccountRepository {
             preparedStatement.setDouble(3, account.getCashBalance());
             preparedStatement.setDouble(4, account.getTotalBalance());
             preparedStatement.setString(5, account.getAccountId());
-            preparedStatement.executeUpdate();
+            return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Error updating account: " + e.getMessage());
+            return 0;
         }
     }
 
-    public void deleteAccount(String accountId) {
+    public int deleteAccount(String accountId) {
         String sql = "DELETE FROM Account WHERE accountId = ?";
 
         try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, accountId);
-            preparedStatement.executeUpdate();
+            return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Error deleting account: " + e.getMessage());
+            return 0;
         }
     }
 

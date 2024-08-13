@@ -45,6 +45,19 @@ public class TransactionController {
             response.type("application/json");
             return gson.toJson(accountService.getAllAccounts());
         });
+
+        put("/account", (request, response) -> {
+            Account account = gson.fromJson(request.body(), Account.class);
+            int rowsAffected = accountService.updateAccount(account);
+            response.type("application/json");
+            return gson.toJson(new Response(rowsAffected > 0 ? "200" : "400"));
+        });
+
+        delete("/account/:accountId", (request, response) -> {
+            int rowsAffected = accountService.deleteAccount(request.params(":accountId"));
+            response.type("application/json");
+            return gson.toJson(new Response(rowsAffected > 0 ? "200" : "400"));
+        });
     }
 
     static class Response {

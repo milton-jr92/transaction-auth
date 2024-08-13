@@ -22,4 +22,12 @@ public class AccountService {
     public List<Account> getAllAccounts() {
         return accountRepository.getAllAccounts();
     }
+
+    public int updateAccount(Account account) {
+        return accountRepository.updateAccount(account);
+    }
+
+    public int deleteAccount(String accountId) {
+        return accountRepository.deleteAccount(accountId);
+    }
 }

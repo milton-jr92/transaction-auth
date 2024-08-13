@@ -7,8 +7,8 @@ import java.util.List;
 public class AccountService {
     private final AccountRepository accountRepository;
 
-    public AccountService() {
-        this.accountRepository = new AccountRepository();
+    public AccountService(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
     }
 
     public int createAccount(Account account) {

@@ -5,6 +5,7 @@ import model.Account;
 import model.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import repository.AccountRepository;
 import service.AccountService;
 import service.TransactionService;
 
@@ -18,7 +19,7 @@ public class TransactionController {
         logger.info("Server is running on http://localhost:8000");
 
         TransactionService transactionService = new TransactionService();
-        AccountService accountService = new AccountService();
+        AccountService accountService = new AccountService(new AccountRepository());
         Gson gson = new Gson();
 
         post("/transaction", (request, response) -> {

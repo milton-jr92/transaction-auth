@@ -34,4 +34,11 @@ public class Transaction {
     public void setMerchant(String merchant) {
         this.merchant = merchant;
     }
+
+    public String getMcc() {
+        return mcc;
+    }
+    public void setMcc(String mcc) {
+        this.mcc = mcc;
+    }
 }

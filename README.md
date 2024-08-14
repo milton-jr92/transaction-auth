@@ -86,4 +86,6 @@ A aplicação expõe os seguintes endpoints REST:
 - **DELETE /account/:accountId**: Deleta uma conta específica.
     - **Response**: JSON com o código de status da operação (200 para sucesso, 400 para falha).
 
+## L4. Tratamento de Transações Simultâneas
 
+Para mais detalhes sobre o tratamento de transações simultâneas, consulte a documentação [L4.SimultaneousTransactions](src/L4.SimultaneousTransactions.md).

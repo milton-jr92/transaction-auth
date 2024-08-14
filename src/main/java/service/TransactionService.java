@@ -3,6 +3,7 @@ package service;
 import model.Account;
 import model.MccType;
 import model.Transaction;
+import model.TransactionStatus;
 import repository.AccountRepository;
 
 public class TransactionService {
@@ -31,7 +32,7 @@ public class TransactionService {
                         newBalance = account.getCashBalance() - transaction.getAmount();
                         account.setMealBalance(newBalance);
                     } else {
-                        return "51";
+                        return TransactionStatus.TRANSACTION_REJECTED.getCode();
                     }
                     break;
                 case MEAL:
@@ -42,7 +43,7 @@ public class TransactionService {
                         newBalance = account.getCashBalance() - transaction.getAmount();
                         account.setFoodBalance(newBalance);
                     } else {
-                        return "51";
+                        return TransactionStatus.TRANSACTION_REJECTED.getCode();
                     }
                     break;
                 default:
@@ -50,16 +51,16 @@ public class TransactionService {
                         newBalance = account.getCashBalance() - transaction.getAmount();
                         account.setCashBalance(newBalance);
                     } else {
-                        return "51";
+                        return TransactionStatus.TRANSACTION_REJECTED.getCode();
                     }
                     break;
             }
 
             account.setTotalBalance(account.getTotalBalance() - transaction.getAmount());
             accountRepository.updateAccount(account);
-            return "00";
+            return TransactionStatus.TRANSACTION_APPROVED.getCode();
         } catch (Exception e) {
-            return "07";
+            return TransactionStatus.TRANSACTION_ERROR.getCode();
         }
     }
 }

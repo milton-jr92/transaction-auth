@@ -5,36 +5,21 @@ import model.MccType;
 import model.Transaction;
 import repository.AccountRepository;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class TransactionService {
 
     private final AccountRepository accountRepository;
-    private final Map<String, MccType> merchantMccMap;
+    private final MerchantMccMapper merchantMccMapper;
 
     public TransactionService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
-        this.merchantMccMap = new HashMap<>();
-        initializeMerchantMccMap();
-    }
-
-    private void initializeMerchantMccMap() {
-        merchantMccMap.put("UBER TRIP                   SAO PAULO BR", MccType.CASH);
-        merchantMccMap.put("PICPAY*BILHETEUNICO           GOIANIA BR", MccType.CASH);
-        merchantMccMap.put("UBER EATS                   SAO PAULO BR", MccType.MEAL);
-        merchantMccMap.put("PAG*JoseDaSilva          RIO DE JANEI BR", MccType.FOOD);
-    }
-
-    private MccType getMccType(Transaction transaction) {
-        return merchantMccMap.getOrDefault(transaction.getMerchant(), MccType.fromMcc(transaction.getMcc()));
+        this.merchantMccMapper = new MerchantMccMapper();
     }
 
     public String processTransaction(Transaction transaction) {
         try {
             Account account = accountRepository.getAccount(transaction.getAccountId());
 
-            MccType mccType = getMccType(transaction);
+            MccType mccType = merchantMccMapper.getMccType(transaction.getMerchant(), transaction.getMcc());
             double newBalance;
 
             switch (mccType) {

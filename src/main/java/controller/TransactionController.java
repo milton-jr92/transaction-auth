@@ -18,7 +18,7 @@ public class TransactionController {
         port(8000);
         logger.info("Server is running on http://localhost:8000");
 
-        TransactionService transactionService = new TransactionService();
+        TransactionService transactionService = new TransactionService(new AccountRepository());
         AccountService accountService = new AccountService(new AccountRepository());
         Gson gson = new Gson();
 

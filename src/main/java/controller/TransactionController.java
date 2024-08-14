@@ -33,7 +33,13 @@ public class TransactionController {
             Account account = gson.fromJson(request.body(), Account.class);
             int rowsAffected = accountService.createAccount(account);
             response.type("application/json");
-            return gson.toJson(new Response(rowsAffected > 0 ? "200" : "400"));
+            if (rowsAffected > 0) {
+                response.status(200);
+                return account.getAccountId();
+            } else {
+                response.status(400);
+                return "NOK";
+            }
         });
 
         get("/account/:accountId", (request, response) -> {
@@ -51,13 +57,25 @@ public class TransactionController {
             Account account = gson.fromJson(request.body(), Account.class);
             int rowsAffected = accountService.updateAccount(account);
             response.type("application/json");
-            return gson.toJson(new Response(rowsAffected > 0 ? "200" : "400"));
+            if (rowsAffected > 0) {
+                response.status(200);
+                return account.getAccountId();
+            } else {
+                response.status(400);
+                return "NOK";
+            }
         });
 
         delete("/account/:accountId", (request, response) -> {
             int rowsAffected = accountService.deleteAccount(request.params(":accountId"));
             response.type("application/json");
-            return gson.toJson(new Response(rowsAffected > 0 ? "200" : "400"));
+            if (rowsAffected > 0) {
+                response.status(200);
+                return "OK";
+            } else {
+                response.status(400);
+                return "NOK";
+            }
         });
     }
 

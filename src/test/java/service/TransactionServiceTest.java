@@ -96,4 +96,31 @@ public class TransactionServiceTest {
         verify(accountRepository, times(1)).getAccount(transaction.getAccountId());
         verify(accountRepository, times(0)).updateAccount(any());
     }
+
+    @Test
+    public void testProcessTransactionByMerchantName() {
+        Transaction transaction = new Transaction();
+        transaction.setAccountId("12345");
+        transaction.setAmount(20.00);
+        transaction.setMcc("5811");
+        transaction.setMerchant("UBER TRIP                   SAO PAULO BR");
+
+        Account account = new Account();
+        account.setAccountId("12345");
+        account.setFoodBalance(100.00);
+        account.setMealBalance(100.00);
+        account.setCashBalance(80.00);
+        account.setTotalBalance(280.00);
+
+        when(accountRepository.getAccount(transaction.getAccountId())).thenReturn(account);
+        double expectedBalance = account.getCashBalance() - transaction.getAmount();
+
+        String response = transactionService.processTransaction(transaction);
+
+        assertEquals(expectedBalance, account.getCashBalance());
+        assertEquals("00", response);
+
+        verify(accountRepository, times(1)).getAccount(transaction.getAccountId());
+        verify(accountRepository, times(1)).updateAccount(account);
+    }
 }
